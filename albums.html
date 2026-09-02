@@ -300,67 +300,12 @@
 
 /* =============================================================
    DATA
-   Edit this array to add, remove, or update albums.
-   - cover: an image URL. Leave empty/omit to show a lettered placeholder.
-   - score: overall rating out of 10 (shown in the stamp circle).
-   - tracks: rating is out of 10, used to size the gold bar.
+   Album data now lives in data/albums.json (not inline here).
+   Each cover path should point into data/covers/, e.g.
+   "data/covers/low-tide-radio.jpg". Leave "cover" as an empty
+   string to fall back to the lettered placeholder.
 ============================================================= */
-const ALBUMS = [
-  {
-    artist: "Jane Remington",
-    title: "Low Tide Radio",
-    year: 2023,
-    genre: "Dream Pop",
-    label: "Undertow Records",
-    cover: "",
-    score: 8.7,
-    review: "A record that trusts silence as much as sound. The production keeps everything a few feet underwater — vocals blurred at the edges, guitars that arrive like weather rather than notes. It drags a little in the back third, but the best songs here are the kind you want to replay the second they end.",
-    tracks: [
-      { title: "Harbor Light", duration: "3:12", rating: 8 },
-      { title: "Static Bloom", duration: "4:01", rating: 9.5 },
-      { title: "Low Tide Radio", duration: "3:47", rating: 9 },
-      { title: "Nothing To Wake For", duration: "2:58", rating: 6.5 },
-      { title: "Undertow", duration: "5:14", rating: 9 },
-      { title: "Coastal", duration: "3:33", rating: 7 }
-    ]
-  },
-  {
-    artist: "Marcus Iyer",
-    title: "Concrete Season",
-    year: 2021,
-    genre: "Alt R&B",
-    label: "Self-released",
-    cover: "",
-    score: 7.4,
-    review: "Front-loaded with the album's three best ideas, then coasts. Iyer's falsetto is the real instrument here, and when the arrangements get out of its way — as on the title track — the record is genuinely special. Elsewhere it leans on the same drum pattern a little too often.",
-    tracks: [
-      { title: "Concrete Season", duration: "3:40", rating: 9 },
-      { title: "Fourth Floor", duration: "3:05", rating: 8 },
-      { title: "Nobody's Watching", duration: "4:12", rating: 8.5 },
-      { title: "Slow Traffic", duration: "3:21", rating: 6 },
-      { title: "Repeat", duration: "2:49", rating: 5.5 },
-      { title: "Keys", duration: "3:58", rating: 6.5 },
-      { title: "Outro (Concrete)", duration: "1:40", rating: 7 }
-    ]
-  },
-  {
-    artist: "The Falling Wires",
-    title: "Everyone I Know Is Tired",
-    year: 2024,
-    genre: "Post-Punk",
-    label: "Gray Matter",
-    cover: "",
-    score: 9.1,
-    review: "Tight, furious, and eleven minutes shorter than it needs to justify how good it is. Every song has a hook buried inside the noise, and the rhythm section sounds like it's trying to get somewhere the guitars aren't allowed to go. Easily the tightest thing this band has made.",
-    tracks: [
-      { title: "Everyone I Know Is Tired", duration: "2:41", rating: 9.5 },
-      { title: "Landline", duration: "3:02", rating: 8.5 },
-      { title: "Bruise Colored", duration: "2:19", rating: 9 },
-      { title: "Waiting Room", duration: "3:30", rating: 9.5 },
-      { title: "Cul-de-sac", duration: "2:55", rating: 8.5 }
-    ]
-  }
-];
+let ALBUMS = [];
 
 /* =============================================================
    RENDER
@@ -457,7 +402,20 @@ function render(){
   });
 }
 
-render();
+fetch("data/albums.json")
+  .then(res => {
+    if(!res.ok) throw new Error("Failed to load album data");
+    return res.json();
+  })
+  .then(data => {
+    ALBUMS = data;
+    render();
+  })
+  .catch(err => {
+    document.getElementById("catalog").innerHTML =
+      `<p style="color:var(--ink-soft); padding:24px 4px;">Couldn't load album data (${err.message}). If you're viewing this file directly from disk, serve the site over http instead — e.g. GitHub Pages, or "python3 -m http.server".</p>`;
+    console.error(err);
+  });
 </script>
 
 </body>
