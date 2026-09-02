@@ -1,0 +1,21 @@
+{
+  "name": "huangs-content-site",
+  "version": "1.0.0",
+  "description": "https://huanghuman5.github.io/huangs-content-site/",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HuangHuman5/huangs-content-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HuangHuman5/huangs-content-site/issues"
+  },
+  "homepage": "https://github.com/HuangHuman5/huangs-content-site#readme"
+}
